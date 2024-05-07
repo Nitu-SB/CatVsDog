@@ -5,7 +5,7 @@ namespace EpicToonFX
     public class ETFXLightFade : MonoBehaviour
     {
         public enum OnLifeEnd { DoNothing, Disable, Destroy }
-
+        //test
         [Header("Seconds to dim the light")]
         public float life = 0.2f;
         public OnLifeEnd onLifeEnd = OnLifeEnd.Destroy;
