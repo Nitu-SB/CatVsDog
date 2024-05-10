@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6242628297393285036}
   m_Layer: 0
   m_Name: Dog_0
-  m_TagString: Untagged
+  m_TagString: Body
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -144,8 +144,10 @@ MonoBehaviour:
   moveForce: 10
   isDie: 0
   isFlash: 0
+  isReady: 0
   getHurtEffect: {fileID: 113576, guid: 471088445f741e64c82f447ba7849c30, type: 3}
   dieEffct: {fileID: 111992, guid: ef697b4cb271b7642af97a1a70394631, type: 3}
+  trackEnemyTime: 3
 --- !u!1 &6242628298227379193
 GameObject:
   m_ObjectHideFlags: 0

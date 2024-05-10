@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 6369865850461635895}
   m_Layer: 0
   m_Name: Cat_0
-  m_TagString: Untagged
+  m_TagString: Body
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -228,5 +228,7 @@ MonoBehaviour:
   moveForce: 10
   isDie: 0
   isFlash: 0
+  isReady: 0
   getHurtEffect: {fileID: 113576, guid: 471088445f741e64c82f447ba7849c30, type: 3}
   dieEffct: {fileID: 115286, guid: ec1c5863f61e8ff4a84dbdb8a282a7ac, type: 3}
+  trackEnemyTime: 3

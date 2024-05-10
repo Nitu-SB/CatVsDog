@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class AnimalBase : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class AnimalBase : MonoBehaviour
 
     private SpriteRenderer mySprite;
     private Rigidbody2D rb;
+
+    public float trackEnemyTime = 3f;
+    private float timer;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +59,29 @@ public class AnimalBase : MonoBehaviour
         if (rb.velocity.magnitude > moveForce)
         {
             rb.velocity = rb.velocity.normalized * moveForce;
+        }
+
+        if (GameManager.instance.trackMode)
+        {
+            timer += Time.deltaTime;
+            if (timer > trackEnemyTime)
+            {
+                timer = 0;
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 99); // 获取半径内的所有碰撞体
+
+                foreach (Collider2D col in colliders)
+                {
+                    Debug.Log(">>>>>>>>");
+                    if (col.gameObject.tag == "Body" && col.gameObject.GetComponent<AnimalBase>().belongCamp != belongCamp) // 如果tag是"Body"且不是同阵营
+                    {
+                        Debug.Log("找到不同阵营的Body");
+                        GameObject enemy = col.gameObject;
+                        StartCoroutine(TrackEnemy(enemy));
+                        break;
+                    }
+                }
+
+            }
         }
     }
     public void StartGame()
@@ -95,6 +122,7 @@ public class AnimalBase : MonoBehaviour
         isFlash = true;
         if (health <= 0)
         {
+            GameManager.instance.AnimalDie(belongCamp);
             DieAnim(this.gameObject, true);
             DieAnim(transform.GetChild(0).gameObject);
             isDie = true;
@@ -146,7 +174,19 @@ public class AnimalBase : MonoBehaviour
 
         }
     }
-
+    IEnumerator TrackEnemy(GameObject Obj)
+    {
+        
+        for (int i = 0; i < 30; i++)
+        {
+            if (!isDie)
+            {
+                rb.AddForce((Obj.transform.position - transform.position).normalized * 50f);
+                //Debug.Log("歼敌加速！");
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //对敌人造成随机伤害
@@ -180,7 +220,7 @@ public class AnimalBase : MonoBehaviour
         {
             Obj.GetComponent<Joint2D>().enabled = false;
         }
-        Obj.GetComponent<SpriteRenderer>().sortingOrder = -2;
+        Obj.GetComponent<SpriteRenderer>().sortingOrder = Obj.GetComponent<SpriteRenderer>().sortingOrder - 2;
         Obj.transform.DOScale(new Vector3(Obj.transform.localScale.x * 0.7f, Obj.transform.localScale.y * 0.7f, Obj.transform.localScale.z * 0.7f), 1f);
         if (IsOriginColor)
         {
