@@ -104,7 +104,7 @@ public class AnimalBase : MonoBehaviour
         }
 
         GameObject effect= Instantiate(getHurtEffect);
-        effect.transform.localScale = Vector3.one * 2f;
+        effect.transform.localScale = Vector3.one * 3f;
         effect.transform.position = new Vector3(transform.position.x, transform.position.y, -2);
         Destroy(effect, 3f);
         GetComponent<SpriteRenderer>().color = Color.white;
@@ -127,7 +127,7 @@ public class AnimalBase : MonoBehaviour
             DieAnim(transform.GetChild(0).gameObject);
             isDie = true;
             GameObject dieEffect = Instantiate(dieEffct);
-            dieEffect.transform.localScale = Vector3.one * 2f;
+            dieEffect.transform.localScale = Vector3.one * 3f;
             dieEffect.transform.position = new Vector3(transform.position.x, transform.position.y, -2);
             Destroy(dieEffect, 3f);
             return;
