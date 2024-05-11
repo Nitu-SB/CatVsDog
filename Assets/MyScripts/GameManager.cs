@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -16,10 +16,12 @@ public class GameManager : MonoBehaviour
     public List<GameObject> dogs = new List<GameObject>();
 
     public int catNum=0,dogNum=0;
-    public int curCatNum,curDogNum;
+    //public int curCatNum,curDogNum;
     public Text catText,dogText;
 
     public bool trackMode=false;
+
+    public EndPanel endPanel;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +46,6 @@ public class GameManager : MonoBehaviour
                 return;
             }
             catText.text = catNum + "/10";
-            curCatNum = catNum;
             GameObject animal = Instantiate(cats[index], catSpawnPos);
             animal.transform.position = catSpawnPos.position;
         }
@@ -58,7 +59,6 @@ public class GameManager : MonoBehaviour
                 return;
             }
             dogText.text = dogNum + "/10";
-            curDogNum = dogNum;
             GameObject animal = Instantiate(dogs[index], catSpawnPos);
             animal.transform.position = dogSpawnPos.position;
         }
@@ -67,19 +67,37 @@ public class GameManager : MonoBehaviour
     {
         if (belongCamp == BelongCamp.Cat)
         {
-            curCatNum--;
+            catNum--;
         }
         if (belongCamp == BelongCamp.Dog)
         {
-            curDogNum--;
+            dogNum--;
         }
-        if(curCatNum <=1 || curDogNum <= 1)
+        if(catNum <=1 || dogNum <= 1)
         {
             trackMode = true;
+        }
+        if(catNum ==0 || dogNum == 0)
+        {
+            DOVirtual.DelayedCall(1, () => { 
+                if(catNum==0 && dogNum == 0)
+                {
+                    endPanel.OpenPanel(2);
+                }
+                if(catNum==0&& dogNum > 0)
+                {
+                    endPanel.OpenPanel(1);
+                }
+                if (catNum > 0 && dogNum == 0)
+                {
+                    endPanel.OpenPanel(0);
+                }
+            });
         }
     }
     public void StartGame()
     {
+        
         foreach(Transform child in catSpawnPos)
         {
             child.GetComponent<AnimalBase>().StartGame();
@@ -88,6 +106,11 @@ public class GameManager : MonoBehaviour
         foreach (Transform child in dogSpawnPos)
         {
             child.GetComponent<AnimalBase>().StartGame();
+        }
+
+        if(dogNum ==1 || catNum == 1)
+        {
+            trackMode = true;
         }
     }
 }
