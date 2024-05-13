@@ -6073,7 +6073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d6ff234fd63553418d4dc44e09652ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDamage: 5
+  minDamage: 2
   maxDamage: 10
 --- !u!4 &905730860
 Transform:
